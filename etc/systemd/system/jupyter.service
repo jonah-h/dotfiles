@@ -1,0 +1,14 @@
+[Unit]
+Description=Jupyter Lab
+
+[Service]
+Type=simple
+PIDFile=/run/jupyter.pid
+ExecStart=/bin/zsh -i -c "micromamba activate;jupyter lab"
+User=jonah
+WorkingDirectory=/home/jonah
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=Unbind touchscreen device from driver
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c 'echo "i2c-ELAN901C:00" > /sys/bus/i2c/drivers/i2c_hid_acpi/unbind'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+# Make environment nicer
+zmodule utility
+zmodule environment
+zmodule input
+
+# Set theme and theme deps
+zmodule prompt-pwd
+zmodule git-info
+zmodule minimal
+zmodule magic-enter
+
+# Add completion
+zmodule zsh-users/zsh-completions
+zmodule completion
+
+# Enable more syntax highlighting
+zmodule zsh-users/zsh-syntax-highlighting
+
+# Enable history substring searching
+zmodule zsh-users/zsh-history-substring-search

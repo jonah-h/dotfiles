@@ -1,0 +1,2 @@
+# ignore compiled plugins
+nvim/plugin/
