@@ -26,6 +26,11 @@ require("packer").startup(function(use)
     use {
         "j-hui/fidget.nvim",
         tag = "legacy",
+        config = function()
+            require("fidget").setup {
+            -- options
+        }
+        end,
     }
 
     -- autocompletion framework
@@ -48,9 +53,12 @@ require("packer").startup(function(use)
     }
 
     -- language parser
-    use{
+    use {
         "nvim-treesitter/nvim-treesitter",
-        run = "TSUpdate",
+        run = function()
+            local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+            ts_update()
+        end,
     }
 
     -- indention guides

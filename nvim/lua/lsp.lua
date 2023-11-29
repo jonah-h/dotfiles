@@ -13,7 +13,7 @@ require("mason-lspconfig").setup {
 }
 
 -- lsp loading indicator
-require("fidget").setup()
+--require("fidget").setup()
 
 -- rust
 local rt = require("rust-tools")
