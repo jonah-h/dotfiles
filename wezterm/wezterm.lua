@@ -25,7 +25,7 @@ config.font = wezterm.font_with_fallback {
     "Fira Code SimpleR", -- my patched version
     "IosevkaTerm Nerd Font",
 }
-config.font_size = 7
+config.font_size = 14
 
 config.dpi = 188
 
