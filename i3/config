@@ -135,14 +135,17 @@ client.urgent           #00000000  #b00000  #b00000  #b00000    #00000000
 client.placeholder      #00000000  #0c0c0c  #ffffff  #000000    #00000000
 client.background       #00000000
 
+# window specific settings
+for_window [class="iwgtk"] floating enable
+
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
 # brightness controls
-bindsym XF86MonBrightnessUp exec --no-startup-id echo $(( $(cat /sys/class/backlight/intel_backlight/brightness) + 100 )) > /sys/class/backlight/intel_backlight/brightness
-bindsym XF86MonBrightnessDown exec --no-startup-id echo $(( $(cat /sys/class/backlight/intel_backlight/brightness) - 100 )) > /sys/class/backlight/intel_backlight/brightness
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 10%-
 
 # run on initial startup
 exec xinput --set-prop 9 'libinput Accel Speed' -0.8
@@ -150,7 +153,10 @@ exec xinput --set-prop 9 'libinput Accel Speed' -0.8
 # run on startup/restart
 
 # wallpaper
-exec_always --no-startup-id feh --bg-scale ~/media/wallpapers/mountains.jpg
+#exec_always --no-startup-id feh --bg-scale ~/media/wallpapers/mountains.jpg
+#exec_always --no-startup-id feh --bg-center Downloads/PXL_20231226_022303893.MP.jpg
+#exec_always --no-startup-id feh --bg-center ~/media/wallpapers/antarctic_snowy_hill.jpg
+exec_always --no-startup-id feh --bg-scale ~/media/wallpapers/antarctic_hill.jpg
 
 # bar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
