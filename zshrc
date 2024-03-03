@@ -69,7 +69,8 @@ source ${ZIM_HOME}/init.zsh
 # end zimfw config
 
 # theme settings
-MNML_USER_CHAR="⛬"
+MNML_USER_CHAR="<|"
+MNML_INSERT_CHAR="|>"
 
 # history substring search key-bindings
 bindkey "^[[A" history-substring-search-up
@@ -86,7 +87,7 @@ zstyle ":completion:*" matcher-list "m:{a-z}={a-z}"
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
-export MAMBA_EXE='/home/jonah/bin/micromamba';
+export MAMBA_EXE='/home/jonah/.local/bin/micromamba';
 export MAMBA_ROOT_PREFIX='/home/jonah/.micromamba';
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -97,13 +98,13 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
-# start ssh-agent
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
+## start ssh-agent
+#if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+#    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+#fi
+#if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+#    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+#fi
 
 # activate python environment
 micromamba activate base
