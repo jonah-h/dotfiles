@@ -44,9 +44,16 @@ require("gruvbox").setup {
 
         -- rust
         ["@lsp.type.variable.rust"] = {}, -- this group messes up async functions
+        ["@keyword.import.rust"] = { link = "GruvboxRed" },
 
         -- cpp
         ["@include.cpp"] = { link = "GruvboxAqua" },
+
+        -- latex
+        ["@module.latex"] = { link = "GruvboxAqua" },
+        --["@function.macro.latex"] = { link = "@module.latex" },
+        --["@label.latex"] = { link = "GruvboxBlue" },
+
 
         -- for linux console
         GruvboxFg1 = { ctermfg = 15 },
