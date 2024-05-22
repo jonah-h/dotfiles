@@ -27,6 +27,10 @@ require("todo-comments").setup {
 
 -- tex
 vim.g.vimtex_view_method = "zathura"
+vim.g.vimtex_compiler_latexmk = {
+    out_dir = "out",
+    aux_dir = ".aux"
+}
 
 -- line numbering
 vim.o.number = true
