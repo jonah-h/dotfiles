@@ -29,6 +29,22 @@ cmp.setup({
     completion = {
         autocomplete = false,
     },
+    formatting = {
+        format = function(entry, vim_item)
+            -- trim name if it's too long
+            vim_item.abbr = string.sub(vim_item.abbr, 1, 40)
+            -- source
+            vim_item.menu = ({
+                buffer = "[Buffer]",
+                nvim_lsp = "[LSP]",
+                luasnip = "[LuaSnip]",
+                nvim_lua = "[Lua]",
+                latex_symbols = "[LaTeX]",
+            })[entry.source.name]
+
+            return vim_item
+        end,
+    },
     mapping = cmp.mapping.preset.insert({
         ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
