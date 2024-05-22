@@ -1,6 +1,6 @@
 # exports
 export PATH="$HOME/bin:$HOME/lib:$PATH"
-export PYTHONPATH="$HOME/lib:$PYTHONPATH"
+export PYTHONPATH="$HOME/.local/lib:$PYTHONPATH"
 export EDITOR=nvim
 
 # history file settings
@@ -20,6 +20,7 @@ alias fetch="neofetch --colors 4 15 4 4 15 15 --ascii_colors 4 4 4 4 4 4"
 alias mamba="micromamba"
 alias weather="curl wttr.in"
 alias vim="nvim"
+alias vpn="gtk-launch com.cisco.secureclient.gui"
 
 # gruvbox colorscheme
 if [ "$TERM" = "linux" ]; then
