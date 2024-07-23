@@ -1,5 +1,5 @@
 # exports
-export PATH="$HOME/bin:$HOME/lib:$PATH"
+export PATH="$HOME.local/bin:$HOME/lib:$PATH"
 export PYTHONPATH="$HOME/.local/lib:$PYTHONPATH"
 export EDITOR=nvim
 
