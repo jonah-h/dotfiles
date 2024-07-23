@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mount -o subvolid=5 /dev/nvme0n1p2 /mnt/btr_pool
+btrbk -c /etc/btrbk/laptop.conf run
+umount /mnt/btr_pool
