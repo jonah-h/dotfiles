@@ -24,6 +24,7 @@ config.window_padding = {
 config.font = wezterm.font_with_fallback {
     "Fira Code SimpleR", -- my patched version
     "IosevkaTerm Nerd Font",
+    "Font Awesome 6 Pro",
 }
 config.font_size = 14
 
