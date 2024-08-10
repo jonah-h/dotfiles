@@ -5,6 +5,3 @@ Description=rclone
 Type=oneshot
 ExecStart=/home/jonah/.local/bin/sync_google_drive.sh
 User=jonah
-
-[Install]
-WantedBy=multi-user.target
