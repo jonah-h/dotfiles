@@ -25,11 +25,8 @@ require("packer").startup(function(use)
     -- visualize lsp progress
     use {
         "j-hui/fidget.nvim",
-        --tag = "legacy",
         config = function()
-            require("fidget").setup {
-            -- options
-        }
+            require("fidget").setup()
         end,
     }
 
@@ -103,7 +100,10 @@ require("packer").startup(function(use)
     --use("sainnhe/gruvbox-material")
 
     -- rust addons
-    use("simrat39/rust-tools.nvim")
+    use {
+        "mrcjkb/rustaceanvim",
+        tag = "4.26.1",
+    }
     use {
         "saecki/crates.nvim",
         tag = "v0.3.0",

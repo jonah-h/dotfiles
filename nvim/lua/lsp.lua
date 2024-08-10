@@ -12,27 +12,31 @@ require("mason-lspconfig").setup {
     ensure_installed = { "lua_ls", "texlab", "pyright" },
 }
 
--- lsp loading indicator
---require("fidget").setup()
-
--- rust
-local rt = require("rust-tools")
-
-rt.setup {
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-  tools = {
-      inlay_hints = {
-          parameter_hints_prefix = "< ",
-          other_hints_prefix = "-> ",
-      },
-  },
+vim.g.rustaceanvim = {
+    server = {
+        on_attach = function(client, bufnr)
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        end,
+        default_settings = {
+            ["rust-analyzer"] = {
+                cargo = {
+                    -- NOTE: This may need to be a per-project setting
+                    features = "all"
+                },
+                inlayHints = {
+                    parameterHints = {
+                        enable = false,
+                    },
+                    typeHints = {
+                        enable = false,
+                    },
+                    --implicitDrops = {
+                    --    enable = true,
+                    --},
+                },
+            },
+        },
+    },
 }
 
 -- c++
@@ -41,9 +45,6 @@ require("clangd_extensions").setup()
 -- Set up lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local lsp = require("lspconfig")
-lsp["rust_analyzer"].setup {
-    capabilities = capabilities
-}
 lsp["clangd"].setup {
     capabilities = capabilities
 }
@@ -61,5 +62,8 @@ lsp["texlab"].setup {
     capabilities = capabilities
 }
 lsp["pyright"].setup {
+    capabilities = capabilities
+}
+lsp["wgsl_analyzer"].setup {
     capabilities = capabilities
 }
