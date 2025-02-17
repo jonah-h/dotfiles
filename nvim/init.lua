@@ -29,7 +29,8 @@ require("todo-comments").setup {
 vim.g.vimtex_view_method = "zathura"
 vim.g.vimtex_compiler_latexmk = {
     out_dir = "out",
-    aux_dir = ".aux"
+    aux_dir = ".aux",
+    options = {"-shell-escape", "-verbose"}
 }
 
 -- line numbering
