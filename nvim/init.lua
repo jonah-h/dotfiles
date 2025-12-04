@@ -1,9 +1,9 @@
 -- sub scripts
 require("config.lazy")
-require("colorscheme")
-require("lsp")
-require("completion")
-require("init_dap")
+require("config.colorscheme")
+require("config.lsp")
+require("config.completion")
+require("config.dap")
 
 -- line numbering
 vim.o.number = true
