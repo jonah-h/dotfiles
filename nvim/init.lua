@@ -1,37 +1,9 @@
 -- sub scripts
-require("plugins")
+require("config.lazy")
 require("colorscheme")
-require("status_lines")
 require("lsp")
 require("completion")
-
--- file browser
-require("neo-tree").setup {
-    window = {
-        width = 30,
-    },
-}
-
--- collect diagnostics and TODOs
-require("trouble").setup()
-require("todo-comments").setup {
-    highlight = {
-        pattern = [[.*<(KEYWORDS)\s*]], -- pattern or table of patterns, used for highlighting (vim regex)
-        comments_only = true,
-    },
-    search = {
-        pattern = [[\b(KEYWORDS)\b]], -- ripgrep regex
-    },
-}
-
-
--- tex
-vim.g.vimtex_view_method = "zathura"
-vim.g.vimtex_compiler_latexmk = {
-    out_dir = "out",
-    aux_dir = ".aux",
-    options = {"-shell-escape", "-verbose"}
-}
+require("init_dap")
 
 -- line numbering
 vim.o.number = true

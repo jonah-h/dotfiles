@@ -1,125 +1,200 @@
--- ensure the packer plugin manager is installed
-local ensure_packer = function()
-    local fn = vim.fn
-    local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-    if fn.empty(fn.glob(install_path)) > 0 then
-        fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-        vim.cmd([[packadd packer.nvim]])
-        return true
-    end
-    return false
-end
-
-local packer_bootstrap = ensure_packer()
-
-require("packer").startup(function(use)
-    -- let packer manage itself
-    use("wbthomason/packer.nvim")
-
+return {
     -- collection of common configurations for the Nvim LSP client
-    use("neovim/nvim-lspconfig")
+    {
+        "neovim/nvim-lspconfig",
+        lazy = false,
+    },
 
-    use("williamboman/mason.nvim")
-    use("williamboman/mason-lspconfig.nvim")
+    -- lsp management
+    {
+        "mason-org/mason.nvim",
+        opts = {
+            ui = {
+                icons = {
+                    package_installed = "",
+                    package_pending = "",
+                    package_uninstalled = "",
+                },
+            },
+        },
+    },
+    {
+        "mason-org/mason-lspconfig.nvim",
+        dependencies = {
+            "mason-org/mason.nvim",
+            "neovim/nvim-lspconfig",
+        },
+        opts = {
+            ensure_installed = {
+                --"lua_ls", -- NOTE: use distro package
+                "texlab",
+                "pyright",
+            },
+        },
+    },
 
-    -- visualize lsp progress
-    use {
+    -- lsp progress visualization
+    {
         "j-hui/fidget.nvim",
-        config = function()
-            require("fidget").setup()
-        end,
-    }
+        version = "*",
+        event = "LspAttach",
+        --lazy = false,
+        opts = {},
+    },
 
     -- autocompletion framework
-    use("hrsh7th/nvim-cmp")
-    use {
-        -- cmp LSP completion
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-omni",
-        "hrsh7th/cmp-nvim-lsp-signature-help",
-        "hrsh7th/cmp-nvim-lua",
-        "hrsh7th/cmp-cmdline",
-        -- cmp Snippet completion
-        "hrsh7th/vim-vsnip",
-        "hrsh7th/cmp-vsnip",
-        -- cmp Path completion
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-buffer",
-        after = { "hrsh7th/nvim-cmp" },
-        requires = { "hrsh7th/nvim-cmp" },
-    }
+    {
+        "hrsh7th/nvim-cmp",
+        version=false,
+        dependencies = {
+            -- cmp LSP completion
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-omni",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
+            "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-cmdline",
+            -- cmp Snippet completion
+            "hrsh7th/vim-vsnip",
+            "hrsh7th/cmp-vsnip",
+            -- cmp Path completion
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-buffer",
+        },
+    },
 
     -- language parser
-    use {
+    {
         "nvim-treesitter/nvim-treesitter",
-        run = function()
-            local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-            ts_update()
-        end,
-    }
+        version = false,
+        branch = "main",
+        lazy = false,
+        build = ":TSUpdate",
+    },
 
     -- indention guides
-    use("lukas-reineke/indent-blankline.nvim")
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        ---@module "ibl"
+        ---@type ibl.config
+        opts = {},
+    },
 
     -- fuzzy finder
-    use("nvim-telescope/telescope.nvim")
+    {
+        "nvim-telescope/telescope.nvim",
+        tag = 'v0.2.0',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+    },
 
     -- file browser
-    use {
+    {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v3.x",
-        requires = {
+        dependencies = {
             "nvim-lua/plenary.nvim",
-            "nvim-tree/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
+            "nvim-tree/nvim-web-devicons", -- optional, but recommended
+        },
+        lazy = false, -- neo-tree will lazily load itself
+        opts = {
+            window = {
+                width = 30,
+            },
         }
-    }
+    },
 
     -- status line
-    use {
+    {
         "nvim-lualine/lualine.nvim",
-        requires = { "nvim-tree/nvim-web-devicons", opt = true }
-    }
-
-    -- tabline
-    use {
-        "kdheepak/tabline.nvim",
-        requires = {
-            { "hoob3rt/lualine.nvim", opt=true },
-            {"kyazdani42/nvim-web-devicons", opt = true},
-        }
-    }
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            options = {
+                theme = "gruvbox",
+                section_separators = { left = "", right = "" },
+                component_separators = { left = "│", right = "│" },
+                --component_separators = "┃",
+                --component_separators = "⏽",
+            },
+            tabline = {
+                lualine_a = { "buffers" },
+                lualine_b = {},
+                lualine_c = {},
+                lualine_x = { "tabs" },
+                lualine_y = {},
+                lualine_z = {},
+            },
+        },
+    },
 
     -- collect diagnostics and TODOs
-    use("folke/trouble.nvim")
-    use("folke/todo-comments.nvim")
+    {
+        "folke/trouble.nvim",
+        opts = {},
+    },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            highlight = {
+            --    pattern = [[.*<(KEYWORDS)\s*]], -- pattern or table of patterns, used for highlighting (vim regex)
+                comments_only = true,
+            },
+            search = {
+                pattern = [[\b(KEYWORDS)\b]], -- ripgrep regex
+            },
+        },
+    },
 
     -- color scheme
-    use("ellisonleao/gruvbox.nvim")
-    --use("morhetz/gruvbox")
-    --use("sainnhe/gruvbox-material")
+    {
+        "ellisonleao/gruvbox.nvim",
+        priority = 1000,
+        config = true,
+    },
 
     -- rust addons
-    use {
+    {
         "mrcjkb/rustaceanvim",
-        tag = "4.26.1",
-    }
-    use {
+        --version = "4.26.1",
+        version = "^6",
+        lazy = false,
+    },
+    {
         "saecki/crates.nvim",
-        tag = "v0.3.0",
-        requires = { "nvim-lua/plenary.nvim" },
-    }
+        --tag = "stable",
+        opts = {},
+        --config = function()
+        --    require('crates').setup()
+        --end,
+    },
 
     -- tex addon
-    use("lervag/vimtex")
+    {
+        "lervag/vimtex",
+        lazy = false,
+        init = function()
+            vim.g.vimtex_view_method = "zathura"
+            vim.g.vimtex_compiler_latexmk = {
+                out_dir = "out",
+                aux_dir = ".aux",
+                options = {
+                    "-shell-escape",
+                    "-verbose",
+                    "-file-line-error",
+                    "-synctex=1",
+                    "-interaction=nonstopmode",
+                }
+            }
+        end,
+    },
 
     -- c++ addon
-    use("p00f/clangd_extensions.nvim")
+    {
+        "p00f/clangd_extensions.nvim",
+        opts = {},
+    },
 
-end)
-
--- the first run will install packer and our plugins
-if packer_bootstrap then
-    require("packer").sync()
-    return
-end
+    -- dap
+    { "mfussenegger/nvim-dap" },
+}

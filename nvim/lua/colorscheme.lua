@@ -1,12 +1,15 @@
--- treesitter setup
-require("nvim-treesitter.configs").setup {
-    ensure_installed = "all",
-    auto_install = true,
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-    },
-}
+-- treesitter
+require("nvim-treesitter").install { "all" }
+local bufnr = vim.api.nvim_get_current_buf()
+vim.bo[bufnr].syntax = "on"
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+    callback = function(args)
+        -- Safely try to enable Tree-Sitter highlighting
+        pcall(function()
+            vim.treesitter.start(args.buf)
+        end)
+    end,
+})
 
 -- configure colorscheme
 require("gruvbox").setup {

@@ -1,6 +1,3 @@
--- Cargo.toml source
-require("crates").setup()
-
 -- Set up nvim-cmp.
 local cmp = require("cmp")
 

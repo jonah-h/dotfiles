@@ -1,17 +1,4 @@
--- lsp server installer
-require("mason").setup {
-    ui = {
-        icons = {
-            package_installed = "",
-            package_pending = "",
-            package_uninstalled = "",
-        },
-    }
-}
-require("mason-lspconfig").setup {
-    ensure_installed = { "lua_ls", "texlab", "pyright" },
-}
-
+-- rust
 vim.g.rustaceanvim = {
     server = {
         on_attach = function(client, bufnr)
@@ -19,9 +6,12 @@ vim.g.rustaceanvim = {
         end,
         default_settings = {
             ["rust-analyzer"] = {
+                check = {
+                    workspace = false,
+                },
                 cargo = {
                     -- NOTE: This may need to be a per-project setting
-                    features = "all"
+                    features = "all",
                 },
                 inlayHints = {
                     parameterHints = {
@@ -39,16 +29,15 @@ vim.g.rustaceanvim = {
     },
 }
 
--- c++
-require("clangd_extensions").setup()
-
 -- Set up lspconfig.
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local lsp = require("lspconfig")
-lsp["clangd"].setup {
+-- c++
+vim.lsp.config("clangd", {
     capabilities = capabilities
-}
-lsp["lua_ls"].setup {
+})
+vim.lsp.enable("clangd")
+-- lua
+vim.lsp.config("lua_ls", {
     capabilities = capabilities,
     settings = {
         Lua = {
@@ -57,13 +46,20 @@ lsp["lua_ls"].setup {
             },
         },
     },
-}
-lsp["texlab"].setup {
+})
+vim.lsp.enable("lua_ls")
+-- tex
+vim.lsp.config("texlab", {
     capabilities = capabilities
-}
-lsp["pyright"].setup {
+})
+vim.lsp.enable("texlab")
+-- python
+vim.lsp.config("pyright", {
     capabilities = capabilities
-}
-lsp["wgsl_analyzer"].setup {
+})
+vim.lsp.enable("pyright")
+-- wgsl
+vim.lsp.config("wgsl_analyzer", {
     capabilities = capabilities
-}
+})
+vim.lsp.enable("wgsl_analyzer")
