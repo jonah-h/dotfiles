@@ -163,4 +163,4 @@ exec_always --no-startup-id feh --bg-scale ~/media/wallpapers/antarctic_hill.jpg
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # compositor
-exec_always --no-startup-id picom -b
+#exec_always --no-startup-id picom -b

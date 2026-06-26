@@ -117,10 +117,16 @@ return {
                 --component_separators = "⏽",
             },
             tabline = {
-                lualine_a = { "buffers" },
+                lualine_a = {
+                    {"buffers",
+                    max_length = function()
+                        return vim.o.columns
+                    end,
+                }
+                },
                 lualine_b = {},
                 lualine_c = {},
-                lualine_x = { "tabs" },
+                lualine_x = {},
                 lualine_y = {},
                 lualine_z = {},
             },
@@ -157,7 +163,7 @@ return {
     {
         "mrcjkb/rustaceanvim",
         --version = "4.26.1",
-        version = "^6",
+        version = "^9",
         lazy = false,
     },
     {

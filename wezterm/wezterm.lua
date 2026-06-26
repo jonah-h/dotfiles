@@ -10,6 +10,8 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+config.alternate_buffer_wheel_scroll_speed = 1
+
 config.hide_tab_bar_if_only_one_tab = true
 
 -- remove border
@@ -28,8 +30,7 @@ config.font = wezterm.font_with_fallback {
 }
 config.font_size = 14
 
-config.dpi = 188
-
+--config.dpi = 188
 
 -- color scheme
 config.color_scheme = "Gruvbox Dark (Gogh)"
