@@ -41,26 +41,43 @@ fi
 zstyle :compinstall filename "$HOME/.zshrc"
 # end of lines added by compinstall
 
-autoload -Uz compinit
-compinit
+# OS specific config
+case "$OSTYPE" in
+    linux*)
+        autoload -Uz compinit
+        compinit
+        # zim home
+        ZIM_HOME=~/.zim
+        # download zimfw plugin manager if missing.
+        if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+            curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+                https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+        fi
+        # install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+        if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+            source ${ZIM_HOME}/zimfw.zsh init -q
+        fi
+        # aliases
+        alias vpn="gtk-launch com.cisco.secureclient.gui"
+        # mamba defs
+        export MAMBA_EXE='/home/jonah/.local/bin/micromamba';
+        export MAMBA_ROOT_PREFIX='/home/jonah/.micromamba';
+        ;;
+    darwin*)
+        # zim home
+        ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+        # Install missing modules and update ${ZIM_HOME}/init.zsh if missing or outdated.
+        if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
+            source /opt/homebrew/opt/zimfw/share/zimfw.zsh init
+        fi
+        # mamba defs
+        export MAMBA_EXE='/opt/homebrew/bin/micromamba';
+        export MAMBA_ROOT_PREFIX='/Users/jonahhof/.local/share/mamba';
+        ;;
+esac
 
-# start zimfw config
-ZIM_HOME=~/.zim
-
-# download zimfw plugin manager if missing.
-if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
-  curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
-      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
-fi
-
-# install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
-if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
-  source ${ZIM_HOME}/zimfw.zsh init -q
-fi
-
-# initialize modules.
+# initialize zimfw modules.
 source ${ZIM_HOME}/init.zsh
-# end zimfw config
 
 # theme settings
 MNML_USER_CHAR="<|"
@@ -81,8 +98,6 @@ zstyle ":completion:*" matcher-list "m:{a-z}={a-z}"
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'micromamba shell init' !!
-export MAMBA_EXE='/home/jonah/.local/bin/micromamba';
-export MAMBA_ROOT_PREFIX='/home/jonah/.micromamba';
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__mamba_setup"
@@ -109,4 +124,3 @@ alias fetch="neofetch --colors 4 15 4 4 15 15 --ascii_colors 4 4 4 4 4 4"
 alias mamba="micromamba"
 alias weather="curl wttr.in"
 alias vim="nvim"
-alias vpn="gtk-launch com.cisco.secureclient.gui"
